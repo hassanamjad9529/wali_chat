@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "213723168691",
+    "project_id": "justhosting-23057",
+    "storage_bucket": "justhosting-23057.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213723168691:android:dee54603ad840d3ca555c6",
+        "android_client_info": {
+          "package_name": "com.example.deploying_web"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAShtN-gZh2jbbgJfEt5osawlqk1pNfH4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213723168691:android:35e0bcd6b7bfd4b7a555c6",
+        "android_client_info": {
+          "package_name": "com.example.wali_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAShtN-gZh2jbbgJfEt5osawlqk1pNfH4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
