@@ -48,62 +48,6 @@ class WaliController extends GetxController {
       'email': waliEmail,
       'status': 'pending',
     };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
 
     DocumentReference userDocRef = _firestore.collection('users').doc(userId);
     DocumentSnapshot doc = await userDocRef.get();
