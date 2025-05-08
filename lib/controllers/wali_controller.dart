@@ -40,27 +40,37 @@ class WaliController extends GetxController {
     }
   }
 
-  Future<void> addWali(String waliEmail) async {
-    try {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
+ Future<void> addWali(String waliEmail) async {
+  try {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
-      Map<String, dynamic> waliData = {
-        'email': waliEmail,
-        'status': 'pending',
-      };
+    Map<String, dynamic> waliData = {
+      'email': waliEmail,
+      'status': 'pending',
+    };
 
-      await _firestore.collection('users').doc(userId).update({
-        'walis': FieldValue.arrayUnion([waliData]),
-      });
+    DocumentReference userDocRef = _firestore.collection('users').doc(userId);
+    DocumentSnapshot doc = await userDocRef.get();
 
-      await fetchWalis(); // Refresh list
-      await sendWaliInvitationEmail(waliEmail, ); // Send email with links
-      print("Wali added successfully");
-      Get.snackbar('Success', 'Wali added and invitation sent.');
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
+    if (!doc.exists) {
+      // If user doc doesn't exist, create it with an empty walis list
+      await userDocRef.set({'walis': []});
     }
+
+    // Now safely update the document
+    await userDocRef.update({
+      'walis': FieldValue.arrayUnion([waliData]),
+    });
+
+    await fetchWalis(); // Refresh list
+    await sendWaliInvitationEmail(waliEmail);
+    print("Wali added successfully");
+    Get.snackbar('Success', 'Wali added and invitation sent.');
+  } catch (e) {
+    Get.snackbar('Error', e.toString());
   }
+}
+
 
   Future<void> removeWali(Map<String, dynamic> wali) async {
     try {

@@ -41,49 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCiz1RxwNH23NTFD1CZueiMkwK7kIeaVXA',
-    appId: '1:213723168691:web:644d9f1a0f12ebdca555c6',
-    messagingSenderId: '213723168691',
-    projectId: 'justhosting-23057',
-    authDomain: 'justhosting-23057.firebaseapp.com',
-    storageBucket: 'justhosting-23057.firebasestorage.app',
-    measurementId: 'G-KK4G1PJ2CZ',
+    apiKey: 'AIzaSyCqSz-gQc1MtZojh7AoqULv5xtVe1jp_jY',
+    appId: '1:604942026658:web:b79f184b9a442abba914fb',
+    messagingSenderId: '604942026658',
+    projectId: 'realstate-3e60d',
+    authDomain: 'realstate-3e60d.firebaseapp.com',
+    storageBucket: 'realstate-3e60d.appspot.com',
+    measurementId: 'G-0B0T1G8GF3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAShtN-gZh2jbbgJfEt5osawlqk1pNfH4w',
-    appId: '1:213723168691:android:35e0bcd6b7bfd4b7a555c6',
-    messagingSenderId: '213723168691',
-    projectId: 'justhosting-23057',
-    storageBucket: 'justhosting-23057.firebasestorage.app',
+    apiKey: 'AIzaSyCSGsHadYJ2UjExwkEPXcTHBqmcNDNPLIA',
+    appId: '1:604942026658:android:0d3400d4de2302e2a914fb',
+    messagingSenderId: '604942026658',
+    projectId: 'realstate-3e60d',
+    storageBucket: 'realstate-3e60d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCJLmWtIzMqN7ZnkcpntNTvSjQVoOx1XlI',
-    appId: '1:213723168691:ios:c1683de3aca23a6fa555c6',
-    messagingSenderId: '213723168691',
-    projectId: 'justhosting-23057',
-    storageBucket: 'justhosting-23057.firebasestorage.app',
+    apiKey: 'AIzaSyAIod1C8wbHyfquPCJ8fnmsDEBoHO1haNQ',
+    appId: '1:604942026658:ios:d805eb0a0483ee5da914fb',
+    messagingSenderId: '604942026658',
+    projectId: 'realstate-3e60d',
+    storageBucket: 'realstate-3e60d.appspot.com',
     iosBundleId: 'com.example.waliProject',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCJLmWtIzMqN7ZnkcpntNTvSjQVoOx1XlI',
-    appId: '1:213723168691:ios:c1683de3aca23a6fa555c6',
-    messagingSenderId: '213723168691',
-    projectId: 'justhosting-23057',
-    storageBucket: 'justhosting-23057.firebasestorage.app',
+    apiKey: 'AIzaSyAIod1C8wbHyfquPCJ8fnmsDEBoHO1haNQ',
+    appId: '1:604942026658:ios:d805eb0a0483ee5da914fb',
+    messagingSenderId: '604942026658',
+    projectId: 'realstate-3e60d',
+    storageBucket: 'realstate-3e60d.appspot.com',
     iosBundleId: 'com.example.waliProject',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCiz1RxwNH23NTFD1CZueiMkwK7kIeaVXA',
-    appId: '1:213723168691:web:41cf792808635a3da555c6',
-    messagingSenderId: '213723168691',
-    projectId: 'justhosting-23057',
-    authDomain: 'justhosting-23057.firebaseapp.com',
-    storageBucket: 'justhosting-23057.firebasestorage.app',
-    measurementId: 'G-SGLS76ZMJL',
+    apiKey: 'AIzaSyDncU_IRj3lAO7ICgpwS0vOh-oL8d7Js3U',
+    appId: '1:604942026658:web:8d31faa47c8ed36ca914fb',
+    messagingSenderId: '604942026658',
+    projectId: 'realstate-3e60d',
+    authDomain: 'realstate-3e60d.firebaseapp.com',
+    storageBucket: 'realstate-3e60d.appspot.com',
+    measurementId: 'G-M4XKQWQJ8Y',
   );
 
 }

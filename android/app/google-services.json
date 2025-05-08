@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "213723168691",
-    "project_id": "justhosting-23057",
-    "storage_bucket": "justhosting-23057.firebasestorage.app"
+    "project_number": "604942026658",
+    "project_id": "realstate-3e60d",
+    "storage_bucket": "realstate-3e60d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:213723168691:android:dee54603ad840d3ca555c6",
+        "mobilesdk_app_id": "1:604942026658:android:0d3400d4de2302e2a914fb",
         "android_client_info": {
-          "package_name": "com.example.deploying_web"
+          "package_name": "com.example.wali_project"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAShtN-gZh2jbbgJfEt5osawlqk1pNfH4w"
+          "current_key": "AIzaSyCSGsHadYJ2UjExwkEPXcTHBqmcNDNPLIA"
         }
       ],
       "services": {
@@ -26,15 +26,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:213723168691:android:35e0bcd6b7bfd4b7a555c6",
+        "mobilesdk_app_id": "1:604942026658:android:553244c8fe2f1541a914fb",
         "android_client_info": {
-          "package_name": "com.example.wali_project"
+          "package_name": "com.hifah.flatypk"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAShtN-gZh2jbbgJfEt5osawlqk1pNfH4w"
+          "current_key": "AIzaSyCSGsHadYJ2UjExwkEPXcTHBqmcNDNPLIA"
         }
       ],
       "services": {

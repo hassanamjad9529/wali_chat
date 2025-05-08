@@ -1,9 +1,11 @@
 {
   "projects": {
-    "default": "justhosting-23057",
+    "default": "realstate-3e60d",
     "firebase use wali": "justhosting-23057",
     "Alias for this project: justhosting": "justhosting-23057",
-    "justhosting": "justhosting-23057"
+    "justhosting": "justhosting-23057",
+    "wali_chat": "realstate-3e60d",
+    "firebase use --add": "realstate-3e60d"
   },
   "targets": {},
   "etags": {}

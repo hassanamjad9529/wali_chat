@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCJLmWtIzMqN7ZnkcpntNTvSjQVoOx1XlI</string>
+	<string>AIzaSyAIod1C8wbHyfquPCJ8fnmsDEBoHO1haNQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>213723168691</string>
+	<string>604942026658</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.waliProject</string>
 	<key>PROJECT_ID</key>
-	<string>justhosting-23057</string>
+	<string>realstate-3e60d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>justhosting-23057.firebasestorage.app</string>
+	<string>realstate-3e60d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:213723168691:ios:c1683de3aca23a6fa555c6</string>
+	<string>1:604942026658:ios:d805eb0a0483ee5da914fb</string>
 </dict>
 </plist>
