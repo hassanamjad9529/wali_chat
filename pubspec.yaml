@@ -41,6 +41,9 @@ dependencies:
   mailer: ^6.4.1
   cloud_functions: ^5.5.0
   flutter_svg: ^2.1.0
+  get_storage: ^2.1.1
+  fluttertoast: ^8.2.12
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

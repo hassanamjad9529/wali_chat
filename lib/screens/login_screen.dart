@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wali_project/components/utils/utils.dart';
 import 'package:wali_project/controllers/auth_controllert.dart';
 import 'signup_screen.dart';
 
@@ -7,6 +9,34 @@ class LoginScreen extends StatelessWidget {
   final AuthController authController = Get.find();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  // Validate inputs
+  bool _validateInputs() {
+    if (emailController.text.trim().isEmpty) {
+       Utils.toastMessage(
+        
+        'Email is required',
+      );
+      return false;
+    }
+    if (!GetUtils.isEmail(emailController.text.trim())) {
+       Utils.toastMessage(
+
+        'Please enter a valid email',
+       
+      );
+      return false;
+    }
+    if (passwordController.text.trim().isEmpty) {
+       Utils.toastMessage(
+
+        'Password is required',
+       
+      );
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +46,8 @@ class LoginScreen extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: 400),
           child: Card(
             elevation: 4,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Padding(
               padding: EdgeInsets.all(24),
@@ -41,7 +72,12 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       prefixIcon: Icon(Icons.email),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   SizedBox(height: 16),
                   TextField(
@@ -52,6 +88,10 @@ class LoginScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       prefixIcon: Icon(Icons.lock),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     obscureText: true,
                   ),
@@ -62,10 +102,12 @@ class LoginScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              authController.login(
-                                emailController.text,
-                                passwordController.text,
-                              );
+                              if (_validateInputs()) {
+                                authController.login(
+                                  emailController.text.trim(),
+                                  passwordController.text.trim(),
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(vertical: 16),
@@ -76,17 +118,28 @@ class LoginScreen extends StatelessWidget {
                             ),
                             child: Text(
                               'Log In',
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         )),
                   SizedBox(height: 16),
                   Center(
-                    child: TextButton(
-                      onPressed: () => Get.to(() => SignupScreen()),
-                      child: Text(
-                        'Don’t have an account? Sign Up',
-                        style: TextStyle(color: Colors.blue.shade700),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Don’t have an account? ',
+                        style: TextStyle(color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: 'Sign Up',
+                            style: TextStyle(
+                              color: Colors.blue.shade700,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Get.to(() => SignupScreen()),
+                          ),
+                        ],
                       ),
                     ),
                   ),

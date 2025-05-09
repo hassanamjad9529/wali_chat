@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:wali_project/components/utils/utils.dart';
 
 class WaliController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -11,91 +13,163 @@ class WaliController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchWalis(); // Optionally fetch walis on initialization
+    Future.delayed(Duration(milliseconds: 100), fetchWalis);
+  }
+
+  Future<void> initializeUser(String waliEmail) async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot doc =
+          await _firestore.collection('users').doc(userId).get();
+      List<Map<String, dynamic>> initialWalis = [];
+      if (waliEmail.isNotEmpty) {
+        initialWalis.add({
+          'email': waliEmail,
+          'status': 'pending',
+        });
+      }
+      if (!doc.exists) {
+        await _firestore.collection('users').doc(userId).set({
+          'walis': initialWalis,
+        });
+        walis.value = initialWalis;
+      } else {
+        await fetchWalis();
+      }
+    } catch (e) {
+       Utils.toastMessage(
+        
+        'Failed to initialize user: $e',
+        
+      );
+    }
   }
 
   Future<void> fetchWalis() async {
     try {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
-
+      var currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        return;
+      }
+      String userId = currentUser.uid;
       DocumentSnapshot doc =
           await _firestore.collection('users').doc(userId).get();
 
       if (doc.exists) {
-        // Get the 'walis' field from Firestore document
         var walisData = doc['walis'] ?? [];
-
-        // Ensure it's safely converted to List<Map<String, dynamic>>
         walis.value = (walisData as List)
             .where((item) => item is Map<String, dynamic>)
             .map((item) => Map<String, dynamic>.from(item))
             .toList();
       } else {
-        // If document doesn't exist, create it with empty walis list
         await _firestore.collection('users').doc(userId).set({'walis': []});
         walis.value = [];
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+       Utils.toastMessage(
+        
+        e.toString(),
+       
+      );
     }
   }
 
- Future<void> addWali(String waliEmail) async {
-  try {
-    String userId = FirebaseAuth.instance.currentUser!.uid;
-
-    Map<String, dynamic> waliData = {
-      'email': waliEmail,
-      'status': 'pending',
-    };
-
-    DocumentReference userDocRef = _firestore.collection('users').doc(userId);
-    DocumentSnapshot doc = await userDocRef.get();
-
-    if (!doc.exists) {
-      // If user doc doesn't exist, create it with an empty walis list
-      await userDocRef.set({'walis': []});
-    }
-
-    // Now safely update the document
-    await userDocRef.update({
-      'walis': FieldValue.arrayUnion([waliData]),
-    });
-
-    await fetchWalis(); // Refresh list
-    await sendWaliInvitationEmail(waliEmail);
-    print("Wali added successfully");
-    Get.snackbar('Success', 'Wali added and invitation sent.');
-  } catch (e) {
-    Get.snackbar('Error', e.toString());
-  }
-}
-
-
-  Future<void> removeWali(Map<String, dynamic> wali) async {
+  Future<void> addWali(String waliEmail) async {
     try {
-      String userId = FirebaseAuth.instance.currentUser!.uid;
-      await _firestore.collection('users').doc(userId).update({
-        'walis': FieldValue.arrayRemove([wali])
+      var currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+         Utils.toastMessage(
+
+          'User not logged in',
+         
+        );
+        return;
+      }
+      String userId = currentUser.uid;
+
+      Map<String, dynamic> waliData = {
+        'email': waliEmail,
+        'status': 'pending',
+      };
+
+      DocumentReference userDocRef = _firestore.collection('users').doc(userId);
+      DocumentSnapshot doc = await userDocRef.get();
+
+      if (!doc.exists) {
+        await userDocRef.set({'walis': []});
+      }
+
+      await userDocRef.update({
+        'walis': FieldValue.arrayUnion([waliData]),
       });
-      walis.remove(wali);
-      Get.snackbar('Success', 'Wali removed');
+
+      await fetchWalis();
+      await sendWaliInvitationEmail(waliEmail);
+       Utils.toastMessage(
+        
+        'Wali added and invitation sent.',
+       
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+       Utils.toastMessage(
+
+        e.toString(),
+       
+      );
+    }
+  }
+
+  Future<void> removeWali(String waliEmail) async {
+    try {
+      var currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+         Utils.toastMessage(
+
+          'User not logged in',
+         
+        );
+        return;
+      }
+      String userId = currentUser.uid;
+      var waliToRemove =
+          walis.firstWhereOrNull((wali) => wali['email'] == waliEmail);
+      if (waliToRemove == null) {
+         Utils.toastMessage(
+          
+          'Wali not found',
+        
+        );
+        return;
+      }
+
+      await _firestore.collection('users').doc(userId).update({
+        'walis': FieldValue.arrayRemove([waliToRemove])
+      });
+      walis.removeWhere((wali) => wali['email'] == waliEmail);
+       Utils.toastMessage(
+
+        'Wali removed',
+       
+      );
+    } catch (e) {
+       Utils.toastMessage(
+        
+        e.toString(),
+      
+      );
     }
   }
 
   void clearWalis() {
     walis.clear();
   }
+
   Future<void> sendWaliInvitationEmail(String recipientEmail) async {
-    // ⚠️ WARNING: Never hardcode your credentials in production!
-    String username = 'hassanamjadyousafzai@gmail.com'; // use your email
-    String password = "aznp hbbn dyof wjkv";
+    String username = 'hassanamjadyousafzai@gmail.com';
+    String password = 'aznp hbbn dyof wjkv';
 
     final smtpServer = gmail(username, password);
 
-    // Email content
     final message = Message()
       ..from = Address(username, 'Mini Muslim App')
       ..recipients.add(recipientEmail)
@@ -106,11 +180,18 @@ class WaliController extends GetxController {
     try {
       final sendReport = await send(message, smtpServer);
       print('Email sent: ${sendReport.toString()}');
-      Get.snackbar('Email Sent', 'Invitation sent to $recipientEmail');
+       Utils.toastMessage(
+        
+        'Invitation sent to $recipientEmail',
+       
+      );
     } on MailerException catch (e) {
       print('Email sending failed: $e');
-      Get.snackbar('Email Error', 'Could not send invitation email.');
+       Utils.toastMessage(
+
+        'Could not send invitation email.',
+      
+      );
     }
   }
-
 }

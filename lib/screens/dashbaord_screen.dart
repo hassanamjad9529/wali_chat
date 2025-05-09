@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wali_project/components/utils/utils.dart';
 import 'package:wali_project/controllers/auth_controllert.dart';
-import '../controllers/wali_controller.dart';
+import 'package:wali_project/controllers/wali_controller.dart';
+import 'package:wali_project/screens/all_users_screen.dart';
+import 'package:wali_project/screens/chat_screen.dart';
+import 'package:wali_project/screens/login_screen.dart';
 import '../models/user_model.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -13,15 +17,17 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    UserModel userModel = UserModel.fromFirebaseUser(user!);
+    if (user == null) {
+      Get.offAll(() => LoginScreen());
+      return SizedBox.shrink();
+    }
+    UserModel userModel = UserModel.fromFirebaseUser(user);
 
-    // Get screen width for responsive design
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
     final maxCardWidth = isMobile ? screenWidth : 1000.0;
     final padding = isMobile ? 12.0 : 16.0;
     final titleFontSize = isMobile ? 22.0 : 24.0;
-    final subtitleFontSize = isMobile ? 16.0 : 20.0;
     final listFontSize = isMobile ? 14.0 : 16.0;
 
     return Scaffold(
@@ -37,7 +43,35 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: () => authController.signOut(),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Confirm Logout'),
+                    content: Text('Are you sure you want to log out?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          authController.signOut();
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
@@ -61,29 +95,50 @@ class DashboardScreen extends StatelessWidget {
                         color: Color(0xff1b60c9),
                       ),
                     ),
+                    SizedBox(height: padding),
                     Text(
-                      'Welcome back! Let\'s take a look at your profile.',
+                      'Welcome back, ${userModel.name}!',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: padding),
                     Text(
-                      '${userModel.name}',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '${userModel.email}',
-                      style: TextStyle(fontSize: 14),
+                      userModel.email,
+                      style: TextStyle(fontSize: 12),
                     ),
                     SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => AllUsersScreen());
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'All Users',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
                     Text(
                       'Add Wali',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(
                       height: isMobile ? 47 : 50,
@@ -109,18 +164,15 @@ class DashboardScreen extends StatelessWidget {
                       onPressed: () {
                         final email = waliEmailController.text;
                         if (email.isEmpty) {
-                          Get.snackbar(
-                            'Error',
+                          Utils.toastMessage(
                             'Email cannot be empty',
-                            snackPosition: SnackPosition.BOTTOM,
-                            colorText: Colors.black,
+                           
                           );
                         } else if (!GetUtils.isEmail(email)) {
-                          Get.snackbar(
-                            'Error',
+                           Utils.toastMessage(
+                            
                             'Please enter a valid email address',
-                            snackPosition: SnackPosition.BOTTOM,
-                            colorText: Colors.black,
+                            
                           );
                         } else {
                           waliController.addWali(email);
@@ -140,101 +192,109 @@ class DashboardScreen extends StatelessWidget {
                       child: Text(
                         'Add',
                         style: TextStyle(
-                            fontSize: listFontSize, color: Colors.white),
+                          fontSize: listFontSize,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     SizedBox(height: padding * 1.5),
                     Text(
                       'My Walis',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: padding * 0.5),
-               Obx(() => waliController.walis.isEmpty
-    ? Center(
-        child: Text(
-          'No walis added yet.',
-          style: TextStyle(fontSize: listFontSize),
-        ),
-      )
-    : ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: waliController.walis.length,
-        itemBuilder: (context, index) {
-          final wali = waliController.walis[index];
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ListTile(
-              title: Text(
-                wali['email'],
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                'Status: ${wali['status']}',
-                style: TextStyle(fontSize: listFontSize - 2),
-              ),
-              trailing: GestureDetector(
-                onTap: () {
-                  // Show confirmation dialog
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Confirm Deletion'),
-                        content: Text(
-                            'Are you sure you want to remove this wali?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                            child: Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              waliController.removeWali(wali['email']);
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
+                    Obx(() => waliController.walis.isEmpty
+                        ? Center(
                             child: Text(
-                              'Yes',
-                              style: TextStyle(color: Colors.red),
+                              'No walis added yet.',
+                              style: TextStyle(fontSize: listFontSize),
                             ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffdee5f4),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    "Remove",
-                    style: TextStyle(
-                      fontSize: listFontSize - 2,
-                      color: Color(0xff1b60c9),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      )),   ],
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: waliController.walis.length,
+                            itemBuilder: (context, index) {
+                              final wali = waliController.walis[index];
+                              return Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    wali['email'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    'Status: ${wali['status']}',
+                                    style: TextStyle(
+                                      fontSize: listFontSize - 2,
+                                    ),
+                                  ),
+                                  trailing: GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Confirm Deletion'),
+                                            content: Text(
+                                                'Are you sure you want to remove this wali?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  waliController.removeWali(
+                                                      wali['email']);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                        horizontal: 20,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffdee5f4),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Text(
+                                        "Remove",
+                                        style: TextStyle(
+                                          fontSize: listFontSize - 2,
+                                          color: Color(0xff1b60c9),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          )),
+                  ],
                 ),
               ),
             ),
