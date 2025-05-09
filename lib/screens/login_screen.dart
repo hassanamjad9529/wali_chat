@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wali_project/components/reuseable_widgets/custom_textfield.dart';
 import 'package:wali_project/components/utils/utils.dart';
 import 'package:wali_project/controllers/auth_controllert.dart';
 import 'signup_screen.dart';
@@ -13,25 +14,20 @@ class LoginScreen extends StatelessWidget {
   // Validate inputs
   bool _validateInputs() {
     if (emailController.text.trim().isEmpty) {
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         'Email is required',
       );
       return false;
     }
     if (!GetUtils.isEmail(emailController.text.trim())) {
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         'Please enter a valid email',
-       
       );
       return false;
     }
     if (passwordController.text.trim().isEmpty) {
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         'Password is required',
-       
       );
       return false;
     }
@@ -64,37 +60,46 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 24),
-                  TextField(
+                  CustomTextField(
+                    hintText: 'Email',
                     controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.email),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
                   ),
+                  // TextField(
+                  //   controller: emailController,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Email',
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //     prefixIcon: Icon(Icons.email),
+                  //     errorBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //       borderSide: BorderSide(color: Colors.red),
+                  //     ),
+                  //   ),
+                  //   keyboardType: TextInputType.emailAddress,
+                  // ),
                   SizedBox(height: 16),
-                  TextField(
+                  CustomTextField(
+                    hintText: 'Password',
                     controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.lock),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
                     obscureText: true,
                   ),
+                  // TextField(
+                  //   controller: passwordController,
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Password',
+                  //     border: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //     prefixIcon: Icon(Icons.lock),
+                  //     errorBorder: OutlineInputBorder(
+                  //       borderRadius: BorderRadius.circular(8),
+                  //       borderSide: BorderSide(color: Colors.red),
+                  //     ),
+                  //   ),
+                  //   obscureText: true,
+                  // ),
                   SizedBox(height: 24),
                   Obx(() => authController.isLoading.value
                       ? Center(child: CircularProgressIndicator())

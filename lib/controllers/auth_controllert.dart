@@ -10,10 +10,12 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var isLoading = false.obs;
 
-  Future<void> signUp(String name, String email, String password, String waliEmail) async {
+  Future<void> signUp(
+      String name, String email, String password, String waliEmail) async {
     try {
       isLoading.value = true;
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -23,10 +25,8 @@ class AuthController extends GetxController {
         await Get.find<WaliController>().initializeUser(waliEmail);
         Get.off(() => DashboardScreen());
       } else {
-         Utils.toastMessage(
-          
+        Utils.toastMessage(
           'User creation failed.',
-          
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -44,15 +44,12 @@ class AuthController extends GetxController {
         default:
           errorMessage = 'Signup failed: ${e.message}';
       }
-       Utils.toastMessage(
+      Utils.toastMessage(
         errorMessage,
-        
       );
     } catch (e) {
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         'An unexpected error occurred: $e',
-       
       );
     } finally {
       isLoading.value = false;
@@ -61,12 +58,22 @@ class AuthController extends GetxController {
 
   Future<void> login(String email, String password) async {
     try {
+      // Show loading indicator
       isLoading.value = true;
+
+      // Attempt to sign in with the provided email and password
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // After successful login, fetch wali data
       await Get.find<WaliController>().fetchWalis();
+
+      // Navigate to the dashboard screen
       Get.off(() => DashboardScreen());
     } on FirebaseAuthException catch (e) {
+      // This variable will hold the message to show the user
       String errorMessage;
+
+      // Firebase provides error codes like 'user-not-found', 'wrong-password', etc.
       switch (e.code) {
         case 'user-not-found':
           errorMessage = 'No user found with this email.';
@@ -78,20 +85,25 @@ class AuthController extends GetxController {
           errorMessage = 'Invalid email address.';
           break;
         default:
-          errorMessage = 'Login failed: ${e.message}';
+          // In case the error message contains 'malformed' or 'expired',
+          // show a user-not-found message
+          if (e.message != null &&
+              (e.message!.toLowerCase().contains('malformed') ||
+                  e.message!.toLowerCase().contains('expired'))) {
+            errorMessage = 'No user found with this email.';
+          } else {
+            // Otherwise, show the original Firebase error message
+            errorMessage = 'Login failed: ${e.message}';
+          }
       }
-       Utils.toastMessage(
-        
-        errorMessage,
-       
-      );
-    } catch (e) {
-       Utils.toastMessage(
 
-        'An unexpected error occurred: $e',
-      
-      );
+      // Show the error message using a toast
+      Utils.toastMessage(errorMessage);
+    } catch (e) {
+      // Handle any other unexpected errors (not from Firebase)
+      Utils.toastMessage('An unexpected error occurred: $e');
     } finally {
+      // Always stop the loading indicator
       isLoading.value = false;
     }
   }
@@ -102,10 +114,8 @@ class AuthController extends GetxController {
       Get.find<WaliController>().clearWalis();
       Get.offAll(() => LoginScreen());
     } catch (e) {
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         'Logout failed: $e',
-       
       );
     }
   }

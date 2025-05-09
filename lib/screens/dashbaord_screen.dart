@@ -33,6 +33,7 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xfff0f3f2),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         foregroundColor: Colors.white,
         title: Text(
           'Mini Muslim Dating App',
@@ -166,13 +167,10 @@ class DashboardScreen extends StatelessWidget {
                         if (email.isEmpty) {
                           Utils.toastMessage(
                             'Email cannot be empty',
-                           
                           );
                         } else if (!GetUtils.isEmail(email)) {
-                           Utils.toastMessage(
-                            
+                          Utils.toastMessage(
                             'Please enter a valid email address',
-                            
                           );
                         } else {
                           waliController.addWali(email);

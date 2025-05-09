@@ -98,20 +98,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 style: widget.textStyle,
                 decoration: InputDecoration(
                   labelStyle: TextStyle(
-                      fontSize: 10, color: Colors.grey,),
+                    fontSize: 10,
+                    color: Colors.grey,
+                  ),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                         widget.isDOBField ? 50.0 : widget.borderRadius!),
-                    borderSide: BorderSide(
-                        color: Colors.grey, width: 1),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                         widget.isDOBField ? 50.0 : widget.borderRadius!),
-                    borderSide: BorderSide(
-                        color: Colors.grey, width: 1),
+                    borderSide: BorderSide(color: Colors.grey, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
@@ -126,16 +126,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   suffixIcon: widget.trailingIcon != null
                       ? Padding(
                           padding: const EdgeInsets.only(right: 5.0),
-                          child: Icon(widget.trailingIcon,
-                              color: Colors.black),
+                          child: Icon(widget.trailingIcon, color: Colors.black),
                         )
                       : widget.obscureText
                           ? IconButton(
                               icon: _isObscured
-                                  ? SvgPicture.asset(
-                                      'assets/icons/eyeclosed.svg',
-                                      width: 15,
-                                      height: 15,
+                                  ? Icon(
+                                      Icons.visibility_off_outlined,
+                                      size: 15,
                                       color: Colors.black,
                                     )
                                   : Icon(

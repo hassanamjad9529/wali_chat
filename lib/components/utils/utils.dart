@@ -15,10 +15,10 @@ class Utils {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  // generic toast message imported from toast package
   // we will utilise this for showing errors or success messages
   static toastMessage(String message) {
     Fluttertoast.showToast(
+      webPosition: "center",
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,

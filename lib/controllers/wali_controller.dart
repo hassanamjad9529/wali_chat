@@ -37,10 +37,8 @@ class WaliController extends GetxController {
         await fetchWalis();
       }
     } catch (e) {
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         'Failed to initialize user: $e',
-        
       );
     }
   }
@@ -66,10 +64,8 @@ class WaliController extends GetxController {
         walis.value = [];
       }
     } catch (e) {
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         e.toString(),
-       
       );
     }
   }
@@ -78,10 +74,8 @@ class WaliController extends GetxController {
     try {
       var currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
-         Utils.toastMessage(
-
+        Utils.toastMessage(
           'User not logged in',
-         
         );
         return;
       }
@@ -104,17 +98,13 @@ class WaliController extends GetxController {
       });
 
       await fetchWalis();
-      await sendWaliInvitationEmail(waliEmail);
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         'Wali added and invitation sent.',
-       
       );
+      await sendWaliInvitationEmail(waliEmail);
     } catch (e) {
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         e.toString(),
-       
       );
     }
   }
@@ -123,10 +113,8 @@ class WaliController extends GetxController {
     try {
       var currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
-         Utils.toastMessage(
-
+        Utils.toastMessage(
           'User not logged in',
-         
         );
         return;
       }
@@ -134,10 +122,8 @@ class WaliController extends GetxController {
       var waliToRemove =
           walis.firstWhereOrNull((wali) => wali['email'] == waliEmail);
       if (waliToRemove == null) {
-         Utils.toastMessage(
-          
+        Utils.toastMessage(
           'Wali not found',
-        
         );
         return;
       }
@@ -146,16 +132,12 @@ class WaliController extends GetxController {
         'walis': FieldValue.arrayRemove([waliToRemove])
       });
       walis.removeWhere((wali) => wali['email'] == waliEmail);
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         'Wali removed',
-       
       );
     } catch (e) {
-       Utils.toastMessage(
-        
+      Utils.toastMessage(
         e.toString(),
-      
       );
     }
   }
@@ -180,17 +162,12 @@ class WaliController extends GetxController {
     try {
       final sendReport = await send(message, smtpServer);
       print('Email sent: ${sendReport.toString()}');
-       Utils.toastMessage(
-        
-        'Invitation sent to $recipientEmail',
-       
-      );
+
+      //  Utils.toastMessage('Invitation sent to $recipientEmail', );
     } on MailerException catch (e) {
       print('Email sending failed: $e');
-       Utils.toastMessage(
-
+      Utils.toastMessage(
         'Could not send invitation email.',
-      
       );
     }
   }
